@@ -2,6 +2,7 @@ package org.chi.repositories;
 
 import org.chi.exceptions.UserUpdateFailedException;
 import org.chi.models.User;
+import org.chi.repositories.db.DatabaseConnectionManager;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -14,26 +15,16 @@ import static java.time.chrono.JapaneseEra.values;
 public class UserRepository {
 
 
-    public static Connection connect(){
-//        String url = ""; //mysql -> localhost:3306, postqres ->localhost:5432
-        //String url ="//localhost:5432/chi?createDatabaseIfNotExist=true";
 
-        String url = "jdbc:postgresql://localhost:5432/chi";
-        String username = "postgres";
-        String password = "password";
-        try {
-            return DriverManager.getConnection(url, username, password);
-        }catch (SQLException e){
-            throw new RuntimeException(e);
-        }
-    }
+
     public User saveUser(User user) {
 //        String getIdSqlStatement = "select count(*) from users";
         String sql = "insert into users (id, wallet_id)values(?,?)";
-        
-        try(Connection connection =connect()){
+        DatabaseConnectionManager databaseConnectionManager = DatabaseConnectionManager.getInstance();
+
+        try(Connection connection = databaseConnectionManager.getConnection()){
             var preparedStatement = connection.prepareStatement(sql);
-            Long id = generateId();
+            Long id = databaseConnectionManager.generateId("users");
             preparedStatement.setLong(1,id);
             preparedStatement.setLong(2,user.getWalletId());
 //            if(user.getWalletId() != null)
@@ -46,6 +37,7 @@ public class UserRepository {
         }
 
     }
+
 
     private Long generateId(){
         try (Connection connection = connect()){
