@@ -3,7 +3,7 @@ package org.chi.models;
 public class User {
 
     private Long id;
-    private Wallet wallet;
+    private Long walletId;
 
     public Long getId() {
         return id;
@@ -13,12 +13,12 @@ public class User {
         this.id = id;
     }
 
-    public Wallet getWallet() {
-        return wallet;
+    public Long getWalletId() {
+        return walletId;
     }
 
-    public void setWallet(Wallet wallet) {
-        this.wallet = wallet;
+    public void setWalletId(Long wallet) {
+        this.walletId = wallet;
     }
 
 
