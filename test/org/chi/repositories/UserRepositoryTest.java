@@ -49,10 +49,11 @@ class UserRepositoryTest {
         assertTrue(user.isEmpty());
     }
 
-//    @Test
-//    public void testFindAll(){
-//        List<User> users = userRep.findAll();
-//        assertNotNull(users);
-//        assertEquals(3, users.size());
-//    }
+    @Test
+    public void testFindAll(){
+        List<User> users = userRep.findAll();
+        System.out.println("users = " + users);
+        assertNotNull(users);
+        assertEquals(3, users.size());
+    }
 }

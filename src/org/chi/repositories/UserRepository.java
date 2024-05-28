@@ -4,6 +4,7 @@ import org.chi.exceptions.UserUpdateFailedException;
 import org.chi.models.User;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -118,9 +119,23 @@ public class UserRepository {
             String sql = "SELECT * FROM users";
            PreparedStatement statement = connection.prepareStatement(sql);
            ResultSet resultSet = statement.executeQuery();
+           return extractUsersFrom(resultSet);
         }catch (SQLException e){
-
+            return null;
         }
-        return null;
+
+    }
+
+    private List<User> extractUsersFrom(ResultSet resultSet) throws SQLException {
+        List<User> users = new ArrayList<>();
+        while(resultSet.next()){
+            Long id = resultSet.getLong("id");
+            Long walletId = resultSet.getLong("wallet_id");
+            User user = new User();
+            user.setId(id);
+            user.setWalletId(walletId);
+            users.add(user);
+        }
+        return users;
     }
 }
